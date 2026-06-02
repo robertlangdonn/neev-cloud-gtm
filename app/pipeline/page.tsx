@@ -3,7 +3,37 @@
 import { useState } from "react";
 import clustersData from "@/data/keywords/clusters.json";
 import _STORED_BRIEFS from "@/data/briefs/index.json";
+import { useLoadingMessages, LoadingDots } from "@/components/LoadingMessage";
 const STORED_BRIEFS = _STORED_BRIEFS as Record<string, string>;
+
+const BRIEF_MESSAGES = [
+  "Analysing keyword intent and SERP gaps…",
+  "Mapping E-E-A-T requirements for this cluster…",
+  "Identifying content gaps vs. top 10 results…",
+  "Structuring the brief sections…",
+  "Writing H2 outlines and depth requirements…",
+  "Adding compliance verification checklist…",
+  "Finalising CTA and internal linking targets…",
+];
+
+const CLUSTER_MESSAGES = [
+  "Fetching keyword volumes from DataForSEO (India)…",
+  "Computing semantic embeddings via OpenAI…",
+  "Identifying topic clusters by cosine similarity…",
+  "Scoring clusters against NeevCloud's ICP…",
+  "Ranking by volume × intent × business value…",
+];
+
+const SAMPLE_KEYWORDS = `sovereign cloud India
+GPU compute India
+H100 rental India
+BFSI cloud compliance
+data residency India
+MeitY empanelled cloud
+RBI cloud guidelines banks
+AI infrastructure India
+LLM training cost India
+enterprise cloud migration India`;
 
 type Cluster = typeof clustersData.clusters[number];
 
@@ -26,9 +56,12 @@ export default function PipelinePage() {
   const [brief, setBrief] = useState<string>("");
   const [briefLoading, setBriefLoading] = useState(false);
   const [briefIsStored, setBriefIsStored] = useState(false);
-  const [liveKeywords, setLiveKeywords] = useState<string>("");
+  const [liveKeywords, setLiveKeywords] = useState<string>(SAMPLE_KEYWORDS);
   const [liveResult, setLiveResult] = useState<{ clusters?: Cluster[]; error?: string } | null>(null);
   const [liveLoading, setLiveLoading] = useState(false);
+
+  const briefMsg = useLoadingMessages(BRIEF_MESSAGES, briefLoading && !brief);
+  const clusterMsg = useLoadingMessages(CLUSTER_MESSAGES, liveLoading);
 
   async function generateBrief(cluster: Cluster, forceLive = false) {
     setSelectedCluster(cluster);
@@ -234,12 +267,7 @@ export default function PipelinePage() {
                 </div>
               )}
 
-              {briefLoading && !brief && (
-                <div className="flex items-center gap-2 text-xs text-[var(--muted-foreground)]">
-                  <span className="inline-block w-1.5 h-1.5 bg-[var(--accent-green)] rounded-full animate-pulse"></span>
-                  Calling Claude claude-sonnet-4-6…
-                </div>
-              )}
+              {briefLoading && !brief && <LoadingDots message={briefMsg} />}
 
               {brief && (
                 <div className="bg-[var(--panel)] border border-[var(--border)] rounded-lg p-5">
@@ -272,23 +300,24 @@ export default function PipelinePage() {
             <textarea
               value={liveKeywords}
               onChange={e => setLiveKeywords(e.target.value)}
-              placeholder={`sovereign cloud India\nGPU compute India\nH100 rental India\nBFSI cloud compliance\ndata residency India`}
-              className="w-full h-36 bg-[var(--panel)] border border-[var(--border)] rounded-lg p-3 text-xs text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] resize-none focus:outline-none focus:border-[var(--accent-green)] font-mono"
+              className="w-full h-48 bg-[var(--panel)] border border-[var(--border)] rounded-lg p-3 text-xs text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] resize-none focus:outline-none focus:border-[var(--accent-green)] font-mono leading-relaxed"
             />
-            <button
-              onClick={runLiveCluster}
-              disabled={liveLoading || !liveKeywords.trim()}
-              className="px-4 py-2 text-xs bg-[var(--accent-green)] text-[#0e0e10] rounded font-medium disabled:opacity-50 flex items-center gap-2"
-            >
-              {liveLoading ? (
-                <>
-                  <span className="w-1.5 h-1.5 bg-[#0e0e10] rounded-full animate-pulse inline-block"></span>
-                  Running pipeline…
-                </>
-              ) : (
-                "Run live cluster →"
-              )}
-            </button>
+            <div className="flex items-center justify-between gap-3">
+              <button
+                onClick={runLiveCluster}
+                disabled={liveLoading || !liveKeywords.trim()}
+                className="px-4 py-2 text-xs bg-[var(--accent-green)] text-[#0e0e10] rounded font-medium disabled:opacity-50"
+              >
+                {liveLoading ? "Running…" : "Run live cluster →"}
+              </button>
+              <button
+                onClick={() => setLiveKeywords(SAMPLE_KEYWORDS)}
+                className="text-xs text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+              >
+                Reset to sample
+              </button>
+            </div>
+            {liveLoading && <LoadingDots message={clusterMsg} />}
           </div>
 
           {liveResult?.error && (

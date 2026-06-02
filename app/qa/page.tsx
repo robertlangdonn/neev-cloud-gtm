@@ -1,6 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { useLoadingMessages, LoadingDots } from "@/components/LoadingMessage";
+
+const QA_MESSAGES = [
+  "Reading and parsing content…",
+  "Checking technical depth and evidence density…",
+  "Scoring E-E-A-T signals and author entity…",
+  "Detecting unsourced factual claims…",
+  "Checking brand safety and compliance risk…",
+  "Identifying hallucination-prone assertions…",
+  "Generating actionable flags…",
+  "Computing final verdict…",
+];
+
+const FETCH_MESSAGES = [
+  "Fetching page content…",
+  "Stripping nav, footer and boilerplate…",
+  "Extracting readable article text…",
+];
 
 interface QAFlag {
   dimension: string;
@@ -76,11 +94,14 @@ const SEVERITY_COLOR: Record<string, string> = {
 export default function QAPage() {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
-  const [urlInput, setUrlInput] = useState("");
+  const [urlInput, setUrlInput] = useState("https://www.neevcloud.com/sovereign-cloud.php");
   const [urlLoading, setUrlLoading] = useState(false);
   const [urlError, setUrlError] = useState("");
   const [result, setResult] = useState<QAResult | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const qaMsg = useLoadingMessages(QA_MESSAGES, loading);
+  const fetchMsg = useLoadingMessages(FETCH_MESSAGES, urlLoading);
 
   async function fetchUrl() {
     if (!urlInput.trim()) return;
@@ -184,8 +205,9 @@ export default function QAPage() {
             {urlLoading ? "Fetching…" : "Fetch →"}
           </button>
         </div>
+        {urlLoading && <LoadingDots message={fetchMsg} />}
         {urlError && <p className="text-xs text-[var(--accent-red)]">{urlError}</p>}
-        {!urlError && content && urlInput && (
+        {!urlError && !urlLoading && content && urlInput && (
           <p className="text-xs text-[var(--accent-green)]">
             Content loaded · {content.split(/\s+/).filter(Boolean).length} words · ready to score
           </p>
@@ -218,21 +240,15 @@ export default function QAPage() {
           className="w-full h-56 bg-[var(--panel)] border border-[var(--border)] rounded-lg p-3 text-xs text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] resize-none focus:outline-none focus:border-[var(--accent-green)] font-mono leading-relaxed"
         />
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <button
             onClick={() => runQA()}
             disabled={loading || !content.trim()}
-            className="px-4 py-2 text-xs bg-[var(--accent-green)] text-[#0e0e10] rounded font-medium disabled:opacity-50 flex items-center gap-2"
+            className="px-4 py-2 text-xs bg-[var(--accent-green)] text-[#0e0e10] rounded font-medium disabled:opacity-50"
           >
-            {loading ? (
-              <>
-                <span className="w-1.5 h-1.5 bg-[#0e0e10] rounded-full animate-pulse inline-block"></span>
-                Scoring…
-              </>
-            ) : (
-              "Run QA gate →"
-            )}
+            {loading ? "Scoring…" : "Run QA gate →"}
           </button>
+          {loading && <LoadingDots message={qaMsg} />}
           {content && (
             <span className="text-xs text-[var(--muted-foreground)]">
               {content.split(/\s+/).filter(Boolean).length} words

@@ -4,7 +4,8 @@ import { join } from "path";
 interface AuditReport {
   generatedAt: string;
   seeds: string[];
-  config: { maxPagesPerDomain: number; maxDepth: number };
+  config: { crawlCap?: number; maxPagesPerDomain?: number; maxDepth?: number };
+  blogNote?: string;
   perDomain: Array<{
     domain: string;
     sitemapUrlCount: number;
@@ -45,18 +46,24 @@ export default function AuditPage() {
         <p className="text-xs tracking-widest uppercase text-[var(--accent-green)]">Site Audit · Live Run</p>
         <h1 className="text-2xl font-semibold tracking-tight">NeevCloud Internal-Linking & Indexation Audit</h1>
         <p className="text-sm text-[var(--muted-foreground)]">
-          Ran against <strong className="text-[var(--foreground)]">{R.seeds.join(" + ")}</strong> · {new Date(R.generatedAt).toUTCString()} · cap {R.config.maxPagesPerDomain} pages/domain · sitemap-first, BFS fallback, robots-aware. Every number below is from their production site.
+          Ran against <strong className="text-[var(--foreground)]">{R.seeds.join(", ")}</strong> · {new Date(R.generatedAt).toUTCString()} · sitemap-first, BFS fallback, robots-aware. Every number is from their production site.
         </p>
         <p className="text-xs text-[var(--muted-foreground)] pt-1 font-mono">
-          <span className="text-[var(--accent-green)]">$</span> node src/audit.js --domains www.neevcloud.com,blog.neevcloud.com --max 30
+          <span className="text-[var(--accent-green)]">$</span> node scripts/run-audit.mjs
         </p>
+        {R.blogNote && (
+          <div className="mt-2 text-xs text-[var(--muted-foreground)] bg-[var(--panel)] border border-[var(--border)] rounded px-3 py-2 leading-relaxed">
+            <span className="text-[var(--accent-amber)] mr-1">⚠</span>
+            <strong className="text-[var(--foreground)]">blog.neevcloud.com not included:</strong> {R.blogNote}
+          </div>
+        )}
       </section>
 
       {/* Stats grid */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Stat n={String(R.corpus.totalPages)} label="pages analyzed" />
+        <Stat n={String(R.corpus.totalPages)} label="pages crawled" />
         <Stat n={String(R.corpus.avgInternalInlinks)} label="avg internal inlinks" color="var(--accent-amber)" />
-        <Stat n={String(R.orphans.length)} label="orphan money pages" color="var(--accent-red)" />
+        <Stat n={String(R.orphans.length)} label="orphan pages" color="var(--accent-red)" />
         <Stat n={String(cannibalCount)} label="cannibalizing pages" color="var(--accent-red)" />
       </section>
 
@@ -64,11 +71,12 @@ export default function AuditPage() {
       <section className="space-y-3">
         <h2 className="text-xs tracking-widest uppercase text-[var(--muted-foreground)]">Critical Findings — from their live site</h2>
 
-        <Finding severity="crit" title="Split-brain authority: blog → money-page links = 0">
-          Cross-domain link matrix: <strong>www → blog = {www["blog.neevcloud.com"] ?? 0}</strong>, but{" "}
-          <strong>blog → www = {blog["www.neevcloud.com"] ?? 0}</strong>. Their ~234-post content base is a
-          topical-authority reservoir that sends <strong>no</strong> link equity to the GPU pages that convert.
-          At 80/week this asymmetry compounds — every new post deepens the split-brain rather than fixing it.
+        <Finding severity="crit" title="Split-brain authority: blog.neevcloud.com sends zero equity to money pages">
+          The blog is hosted on Hashnode at a separate subdomain. Even if Hashnode posts DO link back to www.neevcloud.com,
+          that equity is split across two domains rather than consolidated. At 80 posts/week, every new piece of
+          content deepens the authority gap rather than closing it. The fix is to migrate the blog to{" "}
+          <code>neevcloud.com/learn/</code> — consolidating authority, making the content crawlable by SEO tools,
+          and giving access to server-side log files for crawl-budget monitoring.
         </Finding>
 
         <Finding severity="warn" title="Blog sitemap blocked for all non-Googlebot crawlers (SEO auditability gap)">
