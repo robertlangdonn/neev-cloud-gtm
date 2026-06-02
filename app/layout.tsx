@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               live
             </span>
             <a
-              href="https://github.com/prasadkhake"
+              href="https://github.com/robertlangdonn/neev-cloud-gtm"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[var(--foreground)] transition-colors"
@@ -39,8 +39,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </header>
         <main className="flex-1">{children}</main>
-        <footer className="border-t border-[var(--border)] px-6 py-4 text-xs text-[var(--muted-foreground)]">
-          Built by Prasad Khake · GTM Engineer case study · the application is the build.
+        <footer className="border-t border-[var(--border)] px-6 py-6 text-xs text-[var(--muted-foreground)]">
+          <div className="max-w-5xl mx-auto flex flex-col items-center gap-1.5 text-center">
+            <div className="flex items-center gap-3">
+              <span>Built by</span>
+              <a href="https://prasadkhake.com" target="_blank" rel="noopener noreferrer" className="text-[var(--foreground)] hover:text-[var(--accent-green)] transition-colors font-medium">Prasad Khake</a>
+              <span className="text-[var(--border)]">·</span>
+              <a href="mailto:prasadkhake@gmail.com" className="hover:text-[var(--foreground)] transition-colors">prasadkhake@gmail.com</a>
+              <span className="text-[var(--border)]">·</span>
+              <a href="https://github.com/robertlangdonn/neev-cloud-gtm" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--foreground)] transition-colors">github</a>
+            </div>
+            <div className="text-[var(--border)]">GTM Engineer case study · the application is the build.</div>
+          </div>
         </footer>
       </body>
     </html>

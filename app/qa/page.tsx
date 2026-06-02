@@ -76,11 +76,37 @@ const SEVERITY_COLOR: Record<string, string> = {
 export default function QAPage() {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
+  const [urlInput, setUrlInput] = useState("");
+  const [urlLoading, setUrlLoading] = useState(false);
+  const [urlError, setUrlError] = useState("");
   const [result, setResult] = useState<QAResult | null>(null);
   const [loading, setLoading] = useState(false);
 
-  async function runQA(sampleContent?: string) {
+  async function fetchUrl() {
+    if (!urlInput.trim()) return;
+    setUrlLoading(true);
+    setUrlError("");
+
+    const res = await fetch("/api/fetch-url", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: urlInput.trim() }),
+    });
+
+    const data = await res.json();
+    if (data.error) {
+      setUrlError(data.error);
+    } else {
+      setContent(data.content);
+      setTitle(data.title);
+      setUrlError("");
+    }
+    setUrlLoading(false);
+  }
+
+  async function runQA(sampleContent?: string, sampleTitle?: string) {
     const text = sampleContent ?? content;
+    const t = sampleTitle ?? title;
     if (!text.trim()) return;
     setLoading(true);
     setResult(null);
@@ -88,7 +114,7 @@ export default function QAPage() {
     const res = await fetch("/api/qa", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: text, title }),
+      body: JSON.stringify({ content: text, title: t }),
     });
 
     const data = await res.json();
@@ -99,6 +125,8 @@ export default function QAPage() {
   function useSample() {
     setContent(SAMPLE_CONTENT);
     setTitle("H100 GPU Cloud Pricing India: A Complete Guide");
+    setUrlInput("");
+    setUrlError("");
   }
 
   const verdictColor = result?.verdict === "PASS"
@@ -137,10 +165,37 @@ export default function QAPage() {
         ))}
       </section>
 
+      {/* URL input */}
+      <section className="space-y-2">
+        <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wide">Score a live URL</p>
+        <div className="flex gap-2">
+          <input
+            value={urlInput}
+            onChange={e => setUrlInput(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && fetchUrl()}
+            placeholder="https://blog.neevcloud.com/sovereign-cloud-india"
+            className="flex-1 bg-[var(--panel)] border border-[var(--border)] rounded-lg px-3 py-2 text-xs text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:border-[var(--accent-green)] font-mono"
+          />
+          <button
+            onClick={fetchUrl}
+            disabled={urlLoading || !urlInput.trim()}
+            className="px-4 py-2 text-xs bg-[var(--panel)] border border-[var(--border)] text-[var(--foreground)] rounded-lg hover:border-[var(--accent-green)] disabled:opacity-50 shrink-0 transition-colors font-mono"
+          >
+            {urlLoading ? "Fetching…" : "Fetch →"}
+          </button>
+        </div>
+        {urlError && <p className="text-xs text-[var(--accent-red)]">{urlError}</p>}
+        {!urlError && content && urlInput && (
+          <p className="text-xs text-[var(--accent-green)]">
+            Content loaded · {content.split(/\s+/).filter(Boolean).length} words · ready to score
+          </p>
+        )}
+      </section>
+
       {/* Input */}
       <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wide">Content to score</p>
+          <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wide">Or paste content directly</p>
           <button
             onClick={useSample}
             className="text-xs text-[var(--accent-green)] hover:underline"

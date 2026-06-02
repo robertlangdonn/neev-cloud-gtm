@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import clustersData from "@/data/keywords/clusters.json";
+import _STORED_BRIEFS from "@/data/briefs/index.json";
+const STORED_BRIEFS = _STORED_BRIEFS as Record<string, string>;
 
 type Cluster = typeof clustersData.clusters[number];
 
@@ -23,15 +25,25 @@ export default function PipelinePage() {
   const [selectedCluster, setSelectedCluster] = useState<Cluster | null>(null);
   const [brief, setBrief] = useState<string>("");
   const [briefLoading, setBriefLoading] = useState(false);
+  const [briefIsStored, setBriefIsStored] = useState(false);
   const [liveKeywords, setLiveKeywords] = useState<string>("");
   const [liveResult, setLiveResult] = useState<{ clusters?: Cluster[]; error?: string } | null>(null);
   const [liveLoading, setLiveLoading] = useState(false);
 
-  async function generateBrief(cluster: Cluster) {
+  async function generateBrief(cluster: Cluster, forceLive = false) {
     setSelectedCluster(cluster);
     setActiveTab("brief");
     setBrief("");
     setBriefLoading(true);
+    setBriefIsStored(false);
+
+    // Load pre-stored brief instantly if available and not forcing live
+    if (!forceLive && STORED_BRIEFS[cluster.id]) {
+      setBrief(STORED_BRIEFS[cluster.id]);
+      setBriefIsStored(true);
+      setBriefLoading(false);
+      return;
+    }
 
     const res = await fetch("/api/brief", {
       method: "POST",
@@ -188,25 +200,44 @@ export default function PipelinePage() {
             <>
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
-                  <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wide">Generating brief for</p>
+                  <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wide">
+                    {briefIsStored ? "Pre-generated brief for" : "Generating brief for"}
+                  </p>
                   <p className="font-semibold">{selectedCluster.name}</p>
                   <p className="text-xs text-[var(--muted-foreground)]">
                     {selectedCluster.keywords.length} keywords · opportunity {selectedCluster.opportunity_score}/100 · {selectedCluster.content_type}
                   </p>
                 </div>
-                <button
-                  onClick={() => generateBrief(selectedCluster)}
-                  disabled={briefLoading}
-                  className="px-3 py-1.5 text-xs bg-[var(--accent-green)] text-[#0e0e10] rounded font-medium disabled:opacity-50 shrink-0"
-                >
-                  {briefLoading ? "Generating…" : "Regenerate"}
-                </button>
+                <div className="flex items-center gap-2 shrink-0">
+                  {briefIsStored && (
+                    <button
+                      onClick={() => generateBrief(selectedCluster, true)}
+                      className="px-3 py-1.5 text-xs border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] rounded transition-colors"
+                    >
+                      Run live →
+                    </button>
+                  )}
+                  <button
+                    onClick={() => generateBrief(selectedCluster, briefIsStored)}
+                    disabled={briefLoading}
+                    className="px-3 py-1.5 text-xs bg-[var(--accent-green)] text-[#0e0e10] rounded font-medium disabled:opacity-50"
+                  >
+                    {briefLoading ? "Generating…" : briefIsStored ? "Regenerate" : "Regenerate"}
+                  </button>
+                </div>
               </div>
+
+              {briefIsStored && (
+                <div className="flex items-center gap-2 text-xs text-[var(--muted-foreground)] bg-[var(--panel)] border border-[var(--border)] rounded px-3 py-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-green)] inline-block shrink-0"></span>
+                  Pre-generated · loads instantly. Hit <strong className="text-[var(--foreground)] mx-1">Run live →</strong> to call Claude API in real time.
+                </div>
+              )}
 
               {briefLoading && !brief && (
                 <div className="flex items-center gap-2 text-xs text-[var(--muted-foreground)]">
                   <span className="inline-block w-1.5 h-1.5 bg-[var(--accent-green)] rounded-full animate-pulse"></span>
-                  Calling Claude API…
+                  Calling Claude claude-sonnet-4-6…
                 </div>
               )}
 
