@@ -1,0 +1,133 @@
+{
+  "generated_at": "2026-06-03T00:00:00Z",
+  "sources": ["DataForSEO (volume/CPC/intent)", "Google Autocomplete (free expansion)"],
+  "domain": "neevcloud.com",
+  "clusters": [
+    {
+      "id": "sovereign-cloud",
+      "name": "Sovereign Cloud & Data Residency",
+      "tier": 1,
+      "content_type": "pillar",
+      "opportunity_score": 87,
+      "rationale": "High regulatory urgency post-DPDP Act. Enterprises and government actively searching. NeevCloud has unique India-sovereign positioning hyperscalers cannot match.",
+      "keywords": [
+        { "keyword": "sovereign cloud India", "volume": 2400, "cpc": 4.20, "competition": 0.61, "intent": "commercial" },
+        { "keyword": "data residency India compliance", "volume": 1600, "cpc": 5.10, "competition": 0.54, "intent": "informational" },
+        { "keyword": "DPDP Act cloud compliance", "volume": 1300, "cpc": 3.80, "competition": 0.48, "intent": "informational" },
+        { "keyword": "MeitY empanelled cloud provider", "volume": 880, "cpc": 6.20, "competition": 0.72, "intent": "commercial" },
+        { "keyword": "government cloud India", "volume": 2900, "cpc": 3.50, "competition": 0.59, "intent": "commercial" },
+        { "keyword": "cloud data sovereignty India", "volume": 1100, "cpc": 4.80, "competition": 0.51, "intent": "informational" },
+        { "keyword": "RBI cloud guidelines banks India", "volume": 720, "cpc": 7.40, "competition": 0.68, "intent": "informational" }
+      ],
+      "serp_gap": "Top results are generic AWS/Azure pages or government circulars. No vendor explains MeitY empanelment + DPDP Act + RBI guidelines in one place. NeevCloud can own this.",
+      "recommended_posts": [
+        "DPDP Act 2023: What Every Cloud Buyer Must Know Before 2026",
+        "MeitY Empanelment Explained: Why It Matters for Government Cloud Procurement",
+        "RBI Cloud Outsourcing Guidelines: A Compliance Checklist for Indian Banks",
+        "Sovereign Cloud vs Public Cloud: The Architecture Difference That Matters for BFSI",
+        "Data Residency India: How to Audit Your Cloud Stack for Compliance"
+      ]
+    },
+    {
+      "id": "gpu-compute",
+      "name": "GPU Compute & AI Infrastructure",
+      "tier": 1,
+      "content_type": "programmatic",
+      "opportunity_score": 92,
+      "rationale": "Highest commercial intent. Buyers comparing GPU SKUs, pricing, availability. NeevCloud already has per-GPU pages — the programmatic substrate systematises what they do manually.",
+      "keywords": [
+        { "keyword": "H100 GPU cloud India", "volume": 3200, "cpc": 12.40, "competition": 0.78, "intent": "commercial" },
+        { "keyword": "rent H100 GPU India", "volume": 2100, "cpc": 14.20, "competition": 0.82, "intent": "transactional" },
+        { "keyword": "GPU cloud pricing India", "volume": 1800, "cpc": 8.60, "competition": 0.71, "intent": "commercial" },
+        { "keyword": "A100 vs H100 cloud India", "volume": 1400, "cpc": 9.80, "competition": 0.65, "intent": "informational" },
+        { "keyword": "LLM training cost India GPU", "volume": 980, "cpc": 11.20, "competition": 0.69, "intent": "commercial" },
+        { "keyword": "AI inference GPU India", "volume": 1600, "cpc": 7.90, "competition": 0.63, "intent": "commercial" },
+        { "keyword": "GPU cluster India enterprise", "volume": 760, "cpc": 15.80, "competition": 0.84, "intent": "commercial" },
+        { "keyword": "NVIDIA B200 cloud India", "volume": 640, "cpc": 13.40, "competition": 0.71, "intent": "commercial" }
+      ],
+      "serp_gap": "SERP dominated by AWS/Azure/GCP global pages with no India-specific pricing or availability. Lambda Labs and CoreWeave rank but have no India presence. NeevCloud can win every India-specific GPU query.",
+      "recommended_posts": [
+        "H100 vs A100 for LLM Training: Performance Benchmarks on NeevCloud",
+        "GPU Cloud Pricing India 2026: H100 / A100 / B200 Compared",
+        "How to Run Llama 3.1 405B on a Single H100 Node: Cost & Setup Guide",
+        "LLM Training Cost Calculator: India GPU Cloud vs AWS vs Azure",
+        "NVIDIA B200 NVL72 Availability India: What You Need to Know"
+      ]
+    },
+    {
+      "id": "enterprise-migration",
+      "name": "Cloud Migration & Enterprise Infrastructure",
+      "tier": 2,
+      "content_type": "pillar",
+      "opportunity_score": 74,
+      "rationale": "Long buying cycle but high ACV. CTOs and platform leads researching migration paths. Comparison and checklist content ranks well and drives inbound.",
+      "keywords": [
+        { "keyword": "AWS to private cloud migration India", "volume": 1100, "cpc": 6.80, "competition": 0.58, "intent": "commercial" },
+        { "keyword": "enterprise cloud migration India", "volume": 2200, "cpc": 5.40, "competition": 0.62, "intent": "commercial" },
+        { "keyword": "on-premise to cloud India", "volume": 1800, "cpc": 4.90, "competition": 0.55, "intent": "informational" },
+        { "keyword": "cloud repatriation India cost", "volume": 620, "cpc": 7.20, "competition": 0.48, "intent": "commercial" },
+        { "keyword": "hybrid cloud India enterprise", "volume": 2800, "cpc": 4.10, "competition": 0.67, "intent": "commercial" },
+        { "keyword": "data centre colocation India", "volume": 3100, "cpc": 5.80, "competition": 0.71, "intent": "commercial" }
+      ],
+      "serp_gap": "Most migration content is US-centric or from large SIs. India-specific migration cost models, compliance-aware migration checklists, and repatriation case studies are almost absent.",
+      "recommended_posts": [
+        "AWS to NeevCloud Migration: A 90-Day Technical Playbook",
+        "Cloud Repatriation India: When On-Prem Makes Financial Sense Again",
+        "Hybrid Cloud Architecture for Indian Enterprises: A Reference Design",
+        "DC Colocation vs Managed Cloud India: TCO Comparison 2026"
+      ]
+    },
+    {
+      "id": "bfsi-compliance",
+      "name": "BFSI & Regulated Sector Cloud",
+      "tier": 2,
+      "content_type": "pillar",
+      "opportunity_score": 81,
+      "rationale": "BFSI is NeevCloud's highest-ACV vertical. Compliance explainers rank long-term and build E-E-A-T with procurement teams. Low competition from cloud vendors who avoid compliance specifics.",
+      "keywords": [
+        { "keyword": "RBI cloud guidelines India banks", "volume": 940, "cpc": 8.40, "competition": 0.52, "intent": "informational" },
+        { "keyword": "IRDAI cloud guidelines insurance India", "volume": 680, "cpc": 7.20, "competition": 0.44, "intent": "informational" },
+        { "keyword": "SEBI cloud framework India", "volume": 520, "cpc": 9.10, "competition": 0.49, "intent": "informational" },
+        { "keyword": "cloud compliance BFSI India", "volume": 1200, "cpc": 6.80, "competition": 0.57, "intent": "commercial" },
+        { "keyword": "financial data cloud India regulations", "volume": 860, "cpc": 7.60, "competition": 0.53, "intent": "informational" }
+      ],
+      "serp_gap": "RBI/IRDAI/SEBI circulars rank but are undigestible. No vendor translates regulatory requirements into cloud architecture decisions. High opportunity for authoritative explainers.",
+      "recommended_posts": [
+        "RBI Master Circular on IT Outsourcing: What It Means for Your Cloud Stack",
+        "IRDAI Cloud Guidelines 2024: A Compliance Map for Indian Insurers",
+        "BFSI Cloud Architecture India: Meeting RBI + DPDP + MeitY Simultaneously"
+      ]
+    },
+    {
+      "id": "ai-ml-infrastructure",
+      "name": "AI/ML Platform & MLOps",
+      "tier": 2,
+      "content_type": "programmatic",
+      "opportunity_score": 78,
+      "rationale": "Fast-growing segment. AI leads and ML engineers researching infrastructure choices before executive buy-in. Benchmark and how-to content performs strongly with this persona.",
+      "keywords": [
+        { "keyword": "MLOps platform India", "volume": 1400, "cpc": 6.20, "competition": 0.58, "intent": "commercial" },
+        { "keyword": "Kubernetes GPU cluster India", "volume": 980, "cpc": 8.40, "competition": 0.64, "intent": "commercial" },
+        { "keyword": "AI model training infrastructure India", "volume": 1100, "cpc": 7.80, "competition": 0.61, "intent": "commercial" },
+        { "keyword": "fine-tuning LLM India cloud", "volume": 760, "cpc": 9.20, "competition": 0.55, "intent": "transactional" },
+        { "keyword": "vector database cloud India", "volume": 640, "cpc": 5.60, "competition": 0.47, "intent": "commercial" },
+        { "keyword": "InfiniBand GPU cluster India", "volume": 420, "cpc": 11.40, "competition": 0.72, "intent": "commercial" }
+      ],
+      "serp_gap": "Very thin India-specific content. Most MLOps and GPU cluster guides are US/EU-centric. Technical audience highly engaged — will read and share detailed how-to content.",
+      "recommended_posts": [
+        "Setting Up a Kubernetes GPU Cluster on NeevCloud: Step-by-Step",
+        "Fine-Tuning Llama 3.1 on Indian Cloud: Cost, Setup, and Benchmarks",
+        "InfiniBand vs Ethernet for GPU Clusters: When It Matters",
+        "MLflow on NeevCloud: A Complete MLOps Setup Guide"
+      ]
+    }
+  ],
+  "volume_model": {
+    "total_addressable_keywords": 847,
+    "tier1_editorial_per_week": 8,
+    "tier2_programmatic_per_week": 52,
+    "tier3_longtail_per_week": 20,
+    "total_per_week": 80,
+    "rationale": "80/week target met without touching editorial quality ceiling. 65% of volume is programmatic (templated GPU SKU × region × use-case pages) where NeevCloud already has the underlying data. Editorial spine of 8/week maintains E-E-A-T signal. Long-tail fills remaining 20 with comparison and FAQ content."
+  }
+}

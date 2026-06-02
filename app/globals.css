@@ -1,0 +1,59 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-border: var(--border);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent-green);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+:root {
+  --background: #0e0e10;
+  --foreground: #ededec;
+  --panel: #16161a;
+  --border: #26262c;
+  --muted-foreground: #8a8a93;
+  --accent-green: #5ad19b;
+  --accent-amber: #e0a24a;
+  --accent-red: #e0685a;
+  --card: #16161a;
+  --card-foreground: #ededec;
+  --primary: #5ad19b;
+  --primary-foreground: #0e0e10;
+  --secondary: #26262c;
+  --secondary-foreground: #ededec;
+  --muted: #1e1e22;
+  --input: #26262c;
+  --ring: #5ad19b;
+  --radius: 0.5rem;
+  --destructive: #e0685a;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-mono), 'SFMono-Regular', ui-monospace, monospace;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
